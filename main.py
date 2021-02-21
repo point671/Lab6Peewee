@@ -20,7 +20,7 @@ class Baza(Model):
 
 
 
-print("Прив")
+print("Прив3")
 
 Baza = Baza.get(Baza.FIO == 'Dima')
 
