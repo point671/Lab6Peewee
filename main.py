@@ -9,7 +9,7 @@ db = SqliteDatabase('schools.db')
 
 class Baza(Model):
 
-    Number = CharField(primary_key=True)  # Ключ Id
+    Number = PrimaryKeyField(unique=True)  # Ключ Id
     FIO = CharField()
     Email = CharField()
     Group = IntegerField()
@@ -20,9 +20,9 @@ class Baza(Model):
 
 
 
-print("Прив3")
 
-Baza = Baza.get(Baza.FIO == 'Dima')
+
+Baza = Baza.get(Baza.Group == 'IVTACbd-21')
 
 if Baza ==True:
     print(Baza.FIO)
@@ -30,6 +30,8 @@ else:
     print("Запрос не найден")
 
 
+    for Baza in Baza.select():
+        print(Baza.Number,Baza.FIO,Baza.Email,Baza.Group)
 
 
 # Repeat with the SAT scores
