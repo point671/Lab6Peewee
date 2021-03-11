@@ -44,12 +44,14 @@ def selection(Baza):
         list.append(Baza.FIO)
         list.append(Baza.Email)
         list.append(Baza.Group)
-        list.append("/n")
+        # list.append("/n")
 
-
-    StrA = " ".join(list)
+   #StrA = " ".join(list)
     html = getIndexPage()
-    html = replace(html,"[1]","Test3")
+
+
+    for i in range(len(list)):
+        html = replace(html, str(i), list[i])
     return html
 
 
@@ -60,26 +62,30 @@ class demoExample:
     index.exposed = True
 
 
-cherrypy.quickstart(demoExample())
+
 
 
 # Удаление сторк
-def delete(Baza, flag):
-    flag = 'tom'
+def delete(Baza):
+    flag = "tom22"
     One = Baza.get(Baza.FIO == flag)  # выбираем всех с именем том
     One.delete_instance()  # и удаляем
 
 
 def create(Baza):
-    Tom = Baza.create(Number='6', FIO='tom', Email="sabakass33@mail.ru", Group='IVTACbd-22')  # создоние записи
+    Tom = Baza.create(Number='6', FIO='tofm', Email="sabakass33@mail.ru", Group='IVTACbd-22')  # создоние записи
 
-    Tom2 = Baza.create(Number='11', FIO='tom22', Email="sabakass33@mail.ru", Group='IVTACbd-21')
+    #Tom2 = Baza.create(Number='11', FIO='tom22', Email="sabakass33@mail.ru", Group='IVTACbd-21')
+    #Tom3 = Baza.create(Number='11', FIO='tom22', Email="sabakass33@mail.ru", Group='IVTACbd-21')
 
 
-# create(Baza)
+#create(Baza)
+#Tom2 = Baza.create(Number='11', FIO='tom22', Email="sabakass33@mail.ru", Group='IVTACbd-21')
 
-# delete(Baza)
+#delete(Baza)
 selection(Baza)
+
 # Repeat with the SAT scores
 # for Baza in Baza.select():
 #    Baza.delete().where(Baza.FIO == "tom2")
+cherrypy.quickstart(demoExample())
