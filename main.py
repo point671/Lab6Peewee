@@ -1,5 +1,6 @@
 # Import from peewee
-
+import random
+import string
 from peewee import *
 import cherrypy
 
@@ -14,7 +15,6 @@ def replace(html, key, value):
 def getIndexPage():
     f = open('Main.html', "r", encoding="utf-8")
     res = f.read()
-
     f.close()
     return res
 
@@ -46,44 +46,49 @@ def selection(Baza):
         list.append(Baza.Group)
         # list.append("/n")
 
-   #StrA = " ".join(list)
+    # StrA = " ".join(list)
     html = getIndexPage()
 
-
-    for i in range(len(list)):
+    for i in range(4):
         html = replace(html, str(i), list[i])
     return html
 
 
 class demoExample:
+    @cherrypy.expose
     def index(self):
         return selection(Baza)
 
     index.exposed = True
 
+    @cherrypy.expose
+    def generate(self, DeleteName):
+        delete(Baza, DeleteName)
 
-
+        return selection(Baza)
 
 
 # Удаление сторк
-def delete(Baza):
-    flag = "tom22"
-    One = Baza.get(Baza.FIO == flag)  # выбираем всех с именем том
+def delete(Baza,DeleteName):
+    One = Baza.get(Baza.FIO == DeleteName)  # выбираем всех с именем
     One.delete_instance()  # и удаляем
 
 
 def create(Baza):
-    Tom = Baza.create(Number='6', FIO='tofm', Email="sabakass33@mail.ru", Group='IVTACbd-22')  # создоние записи
+    Tom1 = Baza.create(Number='1', FIO='Andrey', Email="sabakass33@mail.ru", Group='IVTACbd-22')
+    Tom2 = Baza.create(Number='2', FIO='Anton', Email="sabakass33@mail.ru", Group='IVTACbd-22')
+    Tom3 = Baza.create(Number='3', FIO='Misha', Email="sabakass33@mail.ru", Group='IVTACbd-22')
+    # создоние записи
 
-    #Tom2 = Baza.create(Number='11', FIO='tom22', Email="sabakass33@mail.ru", Group='IVTACbd-21')
-    #Tom3 = Baza.create(Number='11', FIO='tom22', Email="sabakass33@mail.ru", Group='IVTACbd-21')
+    # Tom2 = Baza.create(Number='11', FIO='tom22', Email="sabakass33@mail.ru", Group='IVTACbd-21')
+    # Tom3 = Baza.create(Number='11', FIO='tom22', Email="sabakass33@mail.ru", Group='IVTACbd-21')
 
 
 #create(Baza)
-#Tom2 = Baza.create(Number='11', FIO='tom22', Email="sabakass33@mail.ru", Group='IVTACbd-21')
+# Tom2 = Baza.create(Number='11', FIO='tom22', Email="sabakass33@mail.ru", Group='IVTACbd-21')
 
-#delete(Baza)
-selection(Baza)
+#delete(Baza,nameFlag)
+#selection(Baza)
 
 # Repeat with the SAT scores
 # for Baza in Baza.select():
