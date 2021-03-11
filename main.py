@@ -1,10 +1,22 @@
 # Import from peewee
 
 from peewee import *
+import cherrypy
 
 # Подкючаемся к базе SQLite
 db = SqliteDatabase('schools.db')
 
+
+def replace(html, key, value):
+    return html.replace(key, value)
+
+
+def getIndexPage():
+    f = open('Main.html', "r", encoding="utf-8")
+    res = f.read()
+
+    f.close()
+    return res
 
 
 class Baza(Model):
@@ -17,21 +29,57 @@ class Baza(Model):
         database = db  # какая база данных используется
         db_table = 'schools'  # название таблицы этой базы данных
 
-#Выборка
-#Baza = Baza.get(Baza.Group == 'IVTACbd-21')
-#if Baza == True:
-#    print(Baza.FIO)
-#else:
-#    print("Запрос не найден")
-#   for Baza in Baza.select():
-#        print(Baza.Number, Baza.FIO, Baza.Email, Baza.Group)
 
-#Удаление сторк
-#One = Baza.get(Baza.FIO == 'tom') выбираем всех с именем том
-#One.delete_instance() и удаляем
+# Выборка
+def selection(Baza):
+    Baza = Baza.get(Baza.Group == 'IVTACbd-21')
+    list = []
+    if Baza == True:
+        print(Baza.FIO)
+    else:
+        print("Запрос не найден")
+    for Baza in Baza.select():
+        print(Baza.Number, Baza.FIO, Baza.Email, Baza.Group)
+        list.append(str(Baza.Number))
+        list.append(Baza.FIO)
+        list.append(Baza.Email)
+        list.append(Baza.Group)
+        list.append("/n")
 
-#Tom = Baza.create(Number='6', FIO='tom', Email="sabakass33@mail.ru",Group= 'IVTACbd-21')
-Tom2 = Baza.create(Number='11', FIO='tom2', Email="sabakass33@mail.ru",Group= 'IVTACbd-21')
 
+    StrA = " ".join(list)
+    html = getIndexPage()
+    html = replace(html,"[1]","Test3")
+    return html
+
+
+class demoExample:
+    def index(self):
+        return selection(Baza)
+
+    index.exposed = True
+
+
+cherrypy.quickstart(demoExample())
+
+
+# Удаление сторк
+def delete(Baza, flag):
+    flag = 'tom'
+    One = Baza.get(Baza.FIO == flag)  # выбираем всех с именем том
+    One.delete_instance()  # и удаляем
+
+
+def create(Baza):
+    Tom = Baza.create(Number='6', FIO='tom', Email="sabakass33@mail.ru", Group='IVTACbd-22')  # создоние записи
+
+    Tom2 = Baza.create(Number='11', FIO='tom22', Email="sabakass33@mail.ru", Group='IVTACbd-21')
+
+
+# create(Baza)
+
+# delete(Baza)
+selection(Baza)
 # Repeat with the SAT scores
-Baza.delete().where(Baza.FIO == "tom")
+# for Baza in Baza.select():
+#    Baza.delete().where(Baza.FIO == "tom2")
