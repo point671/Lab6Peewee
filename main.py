@@ -32,7 +32,7 @@ class Baza(Model):
 
 # Выборка
 def selection(Baza):
-    Baza = Baza.get(Baza.Group == 'IVTACbd-21')
+    Baza = Baza.get(Baza.Group == 'IVTACbd')
     list = []
     if Baza == True:
         print(Baza.FIO)
@@ -44,13 +44,15 @@ def selection(Baza):
         list.append(Baza.FIO)
         list.append(Baza.Email)
         list.append(Baza.Group)
-        # list.append("/n")
+        # list_baze.append("/n")
 
-    # StrA = " ".join(list)
     html = getIndexPage()
+    key = 10
 
-    for i in range(4):
-        html = replace(html, str(i), list[i])
+    for i in range(len(list)):
+        html = replace(html, str(key), list[i])
+        key += 1
+
     return html
 
 
@@ -67,17 +69,30 @@ class demoExample:
 
         return selection(Baza)
 
+    @cherrypy.expose
+    def generateCreate(self, CreateName):
+        CreateZapic(Baza, CreateName)
+        return selection(Baza)
+
 
 # Удаление сторк
-def delete(Baza,DeleteName):
+def delete(Baza, DeleteName):
     One = Baza.get(Baza.FIO == DeleteName)  # выбираем всех с именем
     One.delete_instance()  # и удаляем
 
 
+def CreateZapic(Baza, CreateName):
+    Number, FIO, Email, Group = CreateName.split(",")
+    Tom1 = Baza.create(Number=Number, FIO=FIO, Email=Email, Group=Group)
+
+
 def create(Baza):
-    Tom1 = Baza.create(Number='1', FIO='Andrey', Email="sabakass33@mail.ru", Group='IVTACbd-22')
-    Tom2 = Baza.create(Number='2', FIO='Anton', Email="sabakass33@mail.ru", Group='IVTACbd-22')
-    Tom3 = Baza.create(Number='3', FIO='Misha', Email="sabakass33@mail.ru", Group='IVTACbd-22')
+    Tom1 = Baza.create(Number='1', FIO='Andrey', Email="sabakass@mail.ru", Group='IVTACbd')
+    Tom2 = Baza.create(Number='2', FIO='Anton', Email="sabakass@mail.ru", Group='IVTACbd')
+    # Tom3 = Baza.create(Number='3', FIO='Misha', Email="sabakass33@mail.ru", Group='IVTACbd-22')
+    Tom4 = Baza.create(Number='4', FIO='Dima', Email="sabakass@mail.ru", Group='IVTACbd')
+    Tom5 = Baza.create(Number='5', FIO='Rusel', Email="sabakass@mail.ru", Group='IVTACbd')
+    Tom6 = Baza.create(Number='6', FIO='Grisha', Email="sabakass@mail.ru", Group='IVTACbd')
     # создоние записи
 
     # Tom2 = Baza.create(Number='11', FIO='tom22', Email="sabakass33@mail.ru", Group='IVTACbd-21')
@@ -85,10 +100,9 @@ def create(Baza):
 
 
 #create(Baza)
-# Tom2 = Baza.create(Number='11', FIO='tom22', Email="sabakass33@mail.ru", Group='IVTACbd-21')
 
-#delete(Baza,nameFlag)
-#selection(Baza)
+# delete(Baza,nameFlag)
+# selection(Baza)
 
 # Repeat with the SAT scores
 # for Baza in Baza.select():
